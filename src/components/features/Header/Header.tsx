@@ -1,9 +1,15 @@
 import React from 'react';
-import {Link, Input, Navbar} from "@/lib/daisyUi/";
+import {Link, Input, Navbar, Button} from "@/lib/daisyUi/";
 
 const Header = () => {
   return (
     <Navbar className="bg-base-100 rounded-2xl z-10 sticky top-1">
+      <div className="flex-none">
+        <Button shape="square" color="ghost" className="md:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-5 h-5 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </Button>
+      </div>
+
       <div className="flex-none">
         <a className="btn btn-ghost normal-case text-xl" href="/">daisyUI</a>
       </div>
@@ -40,8 +46,10 @@ const Header = () => {
           )
           : (
             <>
-              <Link className="btn btn-primary" href="/auth">Войти</Link>
-              <Link className="btn btn-primary" href="/auth">Зарегистрироваться</Link>
+              <div className="hidden md:flex gap-1">
+                <Link className="btn btn-primary" href="/auth">Войти</Link>
+                <Link className="btn btn-primary" href="/auth">Зарегистрироваться</Link>
+              </div>
             </>
           )
         }

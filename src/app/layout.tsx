@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru" data-theme="lemonade">
-      <body className={cx('bg-gray-100 relative', inter.className)}>
+      <body className={cx('bg-base-200 relative', inter.className)}>
         <div className="container mx-auto">
 
           <div className="pt-3"></div>

@@ -9,7 +9,7 @@ export default function Auth() {
 
   return (
     <>
-      <Card compact className="bg-base-100 w-[24rem] p-6 sm:p-10 relative">
+      <Card compact className="w-[24rem] p-6 sm:p-10 relative">
         <Card.Body>
           <div className="mb-8 text-center">
             <h1 className="my-3 text-4xl font-bold">Войти</h1>
