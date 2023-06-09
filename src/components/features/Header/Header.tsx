@@ -3,7 +3,7 @@ import {Link, Input, Navbar} from "@/lib/daisyUi/";
 
 const Header = () => {
   return (
-    <Navbar className="bg-base-100 rounded-2xl z-10 relative">
+    <Navbar className="bg-base-100 rounded-2xl z-10 sticky top-1">
       <div className="flex-none">
         <a className="btn btn-ghost normal-case text-xl" href="/">daisyUI</a>
       </div>
