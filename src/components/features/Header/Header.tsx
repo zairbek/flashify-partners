@@ -15,9 +15,7 @@ const Header = () => {
       </div>
 
       <div className="flex-1">
-        <div className="form-control">
-          <Input bordered placeholder="Search"/>
-        </div>
+
       </div>
 
 
@@ -48,7 +46,7 @@ const Header = () => {
             <>
               <div className="hidden md:flex gap-1">
                 <Link className="btn btn-primary" href="/auth">Войти</Link>
-                <Link className="btn btn-primary" href="/auth">Зарегистрироваться</Link>
+                <Link className="btn btn-primary" href="/auth/registration">Зарегистрироваться</Link>
               </div>
             </>
           )
