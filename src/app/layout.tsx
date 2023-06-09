@@ -1,5 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
+import cx from 'classnames'
+import Header from "@/components/features/Header/Header";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,8 +16,20 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="ru" data-theme="lemonade">
+      <body className={cx('bg-gray-100 relative', inter.className)}>
+        <div className="container mx-auto">
+
+          <div className="pt-3"></div>
+
+          <Header/>
+
+          <div className="flex flex-col">
+            {children}
+          </div>
+
+        </div>
+      </body>
     </html>
   )
 }
