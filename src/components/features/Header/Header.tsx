@@ -1,5 +1,6 @@
 import React from 'react';
-import {Link, Input, Navbar, Button} from "@/lib/daisyUi/";
+import NextLink from "next/link";
+import {Link, Navbar, Button} from "@/lib/daisyUi/";
 
 const Header = () => {
   return (
@@ -45,8 +46,8 @@ const Header = () => {
           : (
             <>
               <div className="hidden md:flex gap-1">
-                <Link className="btn btn-primary" href="/auth">Войти</Link>
-                <Link className="btn btn-primary" href="/auth/registration">Зарегистрироваться</Link>
+                <NextLink className="btn btn-primary" href="/auth">Войти</NextLink>
+                <NextLink className="btn btn-primary" href="/auth/registration">Зарегистрироваться</NextLink>
               </div>
             </>
           )
