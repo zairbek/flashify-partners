@@ -1,36 +1,35 @@
 'use client'
 
-import TextField from "@/components/shared/Forms/TextField/TextField";
 import {useRouter} from "next/navigation";
-import {Button, Link, Divider, Card} from '@/lib/daisyUi'
-import SelectField from "@/components/shared/Forms/SelectField/SelectField";
+import {Steps, Link, Divider, Card} from '@/lib/daisyUi'
+import {useState} from "react";
+import StepOne from "@/components/features/RegistrationForm/StepOne";
+import StepTwo from "@/components/features/RegistrationForm/StepTwo";
+import StepThree from "@/components/features/RegistrationForm/StepThree";
 
 export default function Registration() {
   const router = useRouter()
+  const [step, setStep] = useState(1);
 
   return (
     <>
-      <Card compact className="bg-base-100 w-[34rem] p-6 sm:p-10 relative">
+      <Card compact className="bg-base-100 md:w-[34rem] p-6 sm:p-10 relative">
         <Card.Body>
-          <div className="mb-8 text-center">
-            <h1 className="my-3 text-4xl font-bold">Регистрация</h1>
-            <p className="text-sm text-coolGray-400">Войдите в систему для доступа к своему аккаунту</p>
-          </div>
+          <div className="flex flex-col w-full ">
 
-          <div className="flex flex-col w-full border-opacity-50">
-            <form action="">
-              <div className="flex flex-col gap-y-3">
+            <Steps className="mb-10">
+              <Steps.Step color={step >= 1 && 'primary'}>Создание аккаунта</Steps.Step>
+              <Steps.Step color={step >= 2 && 'primary'}>Shrink the moon</Steps.Step>
+              <Steps.Step color={step >= 3 && 'primary'}>Grab the moon</Steps.Step>
+              <Steps.Step color={step >= 4 && 'primary'}>Финиш</Steps.Step>
+            </Steps>
 
-                <SelectField color="primary" name="type" label="Тип оргонизации" />
-                <TextField color="primary" label="ИНН" name="inn"/>
-                <SelectField color="primary" name="type" label="Регион работы" />
-                <TextField color="primary" label="Юридическое название компании" name="companyName" message="sdfas" error/>
-                <SelectField color="primary" name="type" label="Категория товаров" />
-                <TextField color="primary" label="Названия, которое увидять покупатели" name="companyName"/>
-                <Button color="primary" fullWidth>Зарегистрироваться</Button>
-
-              </div>
-            </form>
+            {step === 1
+              ? <StepOne onNextStep={() => setStep(2)}/>
+              : step === 2
+                ? <StepTwo onNextStep={() => setStep(3)}/>
+                : <StepThree/>
+            }
 
             <Divider>или</Divider>
 
@@ -43,6 +42,7 @@ export default function Registration() {
               </p>
             </div>
           </div>
+
         </Card.Body>
       </Card>
     </>

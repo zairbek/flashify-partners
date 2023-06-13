@@ -16,9 +16,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ru" data-theme="lemonade">
+    <html lang="ru" data-theme="night">
       <body className={cx('bg-base-200 relative', inter.className)}>
-        <div className="container mx-auto">
+        <div className="container-fluid mx-3">
 
           <div className="pt-3"></div>
 

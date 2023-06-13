@@ -1,26 +1,30 @@
 import React from 'react';
 import {Select, SelectProps} from "@/lib/daisyUi";
-import cx from "classnames";
+import classNames from "classnames";
+import {useField} from "formik";
 
 interface SelectFieldProps extends SelectProps {
   label?: string;
   error?: boolean;
   message?: string;
-  mask?: string;
 }
 
 const SelectField: React.FC<SelectFieldProps> = (props) => {
+  const [field, meta, helpers] = useField(props);
+
   return (
     <div className="form-control w-full">
 
       {props.label &&
         <label className="label">
-          <span className="label-text">{props.label}</span>
+          <span className="label-text">{props.label}
+            {props.required && <span className="ml-1 text-red-500">*</span>}
+          </span>
           <span className="label-text-alt"/>
         </label>
       }
 
-      <Select color={props.error ? "error" : props.color} defaultValue={'default'} onChange={console.log} {...props}>
+      <Select color={meta.touched && meta.error ? "error" : props.color} {...field}>
         <option value={'default'} disabled>
           Pick one
         </option>
@@ -31,13 +35,13 @@ const SelectField: React.FC<SelectFieldProps> = (props) => {
         <option value="Star Trek">Star Trek</option>
       </Select>
 
-      {!!props.message &&
+      {!!(meta.touched && meta.error) &&
         <label className="label">
           <span className="label-text-alt"/>
-          <span className={cx(
+          <span className={classNames(
             "label-text-alt",
-            props.error && "text-error",
-          )}>{props.message}</span>
+            meta.touched && meta.error && "text-error",
+          )}>{meta.error}</span>
         </label>
       }
     </div>
