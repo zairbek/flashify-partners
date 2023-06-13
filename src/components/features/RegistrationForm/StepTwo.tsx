@@ -47,7 +47,7 @@ const StepTwo: React.FC<StepTwoProps> = ({onNextStep}) => {
   return (
     <>
       <div className="mb-8 text-center">
-        <h1 className="my-3 text-4xl font-bold">Регистрация</h1>
+        <h1 className="my-3 text-4xl font-bold">Данные о компании</h1>
         <p className="text-sm text-coolGray-400">Войдите в систему для доступа к своему аккаунту</p>
       </div>
 

@@ -2,7 +2,7 @@
 
 import {useRouter} from "next/navigation";
 import {Steps, Link, Divider, Card} from '@/lib/daisyUi'
-import {useState} from "react";
+import React, {useState} from "react";
 import StepOne from "@/components/features/RegistrationForm/StepOne";
 import StepTwo from "@/components/features/RegistrationForm/StepTwo";
 import StepThree from "@/components/features/RegistrationForm/StepThree";
@@ -19,8 +19,8 @@ export default function Registration() {
 
             <Steps className="mb-10">
               <Steps.Step color={step >= 1 && 'primary'}>Создание аккаунта</Steps.Step>
-              <Steps.Step color={step >= 2 && 'primary'}>Shrink the moon</Steps.Step>
-              <Steps.Step color={step >= 3 && 'primary'}>Grab the moon</Steps.Step>
+              <Steps.Step color={step >= 2 && 'primary'}>Данные о{'\u00A0'}компании</Steps.Step>
+              <Steps.Step color={step >= 3 && 'primary'}>Данные о{'\u00A0'}компании</Steps.Step>
               <Steps.Step color={step >= 4 && 'primary'}>Финиш</Steps.Step>
             </Steps>
 
