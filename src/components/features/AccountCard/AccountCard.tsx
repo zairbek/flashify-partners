@@ -13,7 +13,7 @@ const AccountCard = () => {
         <span>Нурмухамадов</span>
       </div>
       <div className="flex-none">
-        <Button className="pr-0">
+        <Button className="pr-0" color="ghost" variant="link">
           <ArrowRightOnRectangleIcon className="h-6 w-6"/>
         </Button>
       </div>
