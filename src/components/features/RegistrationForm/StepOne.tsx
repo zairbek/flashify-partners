@@ -12,7 +12,6 @@ interface StepOneProps {
 interface Values {
   firstName: string;
   lastName: string;
-  email: string;
   phone: string;
   password: string;
   passwordConfirmation: string;
@@ -23,7 +22,6 @@ const StepOne: React.FC<StepOneProps> = ({onNextStep}) => {
   const initialValues: Values = {
     firstName: '',
     lastName: '',
-    email: '',
     phone: '',
     password: '',
     passwordConfirmation: '',
@@ -32,7 +30,6 @@ const StepOne: React.FC<StepOneProps> = ({onNextStep}) => {
   const registrationSchema: ObjectSchema<Values> = Yup.object().shape({
     firstName: Yup.string().required(),
     lastName: Yup.string().required(),
-    email: Yup.string().email().required(),
     phone: Yup.string().required(),
     password: Yup.string().required(),
     passwordConfirmation: Yup.string().required(),
@@ -59,7 +56,6 @@ const StepOne: React.FC<StepOneProps> = ({onNextStep}) => {
           <div className="flex flex-col gap-y-3">
             <TextField color="primary" label="Имя" name="firstName" required />
             <TextField color="primary" label="Фамилия" name="lastName" required />
-            <TextField color="primary" label="Email" name="email" type="email" required />
             <TextField color="primary" label="Телефон номер" name="phone" required type="tel" mask="+\9\96 (999) 99-99-99" placeholder="+996 (___) __-__-__" />
             <TextField color="primary" label="Пароль" name="password" type="password" required />
             <TextField color="primary" label="Повторите пароль" name="passwordConfirmation" type="password" required />
