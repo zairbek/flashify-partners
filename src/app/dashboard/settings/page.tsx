@@ -7,6 +7,9 @@ import {Form, Formik, FormikHelpers} from "formik";
 import * as Yup from 'yup';
 import {Input} from "react-daisyui";
 import {ObjectSchema} from "yup";
+import ChangeEmail from "@/components/features/Settings/Account/ChangeEmail";
+import ChangePhone from "@/components/features/Settings/Account/ChangePhone";
+import ChangePassword from "@/components/features/Settings/Account/ChangePassword";
 
 interface Values {
   firstName: string;
@@ -33,16 +36,8 @@ export default function Settings() {
     }
   }
 
-  const formEmail = {
-
-  }
-
-
-    const [visible, setVisible] = useState<boolean>(false)
-
-  const toggleVisible = () => {
-    setVisible(!visible)
-  }
+    const [phoneVisible, setPhoneVisible] = useState<boolean>(false)
+    const [passwordVisible, setPasswordVisible] = useState<boolean>(false)
 
   return (
     <>
@@ -70,98 +65,11 @@ export default function Settings() {
         <Divider className="my-0"/>
 
         <div className="flex gap-x-4">
-
-        <div className="flex flex-1 gap-x-4 py-2 items-end">
-          <div className="w-full">
-            <label className="label">
-              <span className="label-text">Email</span>
-              <span className="label-text-alt"/>
-            </label>
-            <Input value="xaiker007@gmail.com" className="w-full" readOnly/>
-          </div>
-
-          <div>
-            <Button color="warning" className="normal-case" onClick={toggleVisible}>Сменить почту</Button>
-            <Modal open={visible} onClickBackdrop={toggleVisible}>
-              <Button
-                size="sm"
-                shape="circle"
-                className="absolute right-2 top-2"
-                onClick={toggleVisible}
-              >
-                ✕
-              </Button>
-              <Modal.Header className="font-bold">
-                Congratulations random Interner user!
-              </Modal.Header>
-
-              <Modal.Body>
-                You've been selected for a chance to get one year of subscription to
-                use Wikipedia for free!
-              </Modal.Body>
-            </Modal>
-          </div>
+          <ChangeEmail/>
+          <ChangePhone/>
         </div>
 
-
-        <div className="flex flex-1 gap-x-4 py-2 items-end">
-          <div className="w-full">
-            <label className="label">
-              <span className="label-text">Номер телефона</span>
-              <span className="label-text-alt"/>
-            </label>
-            <Input value="+996 (772) 11-96-63" className="w-full" readOnly/>
-          </div>
-
-          <div>
-            <Button color="warning" className="normal-case" onClick={toggleVisible}>Сменить номер</Button>
-            <Modal open={visible} onClickBackdrop={toggleVisible}>
-              <Button
-                size="sm"
-                shape="circle"
-                className="absolute right-2 top-2"
-                onClick={toggleVisible}
-              >
-                ✕
-              </Button>
-              <Modal.Header className="font-bold">
-                Congratulations random Interner user!
-              </Modal.Header>
-
-              <Modal.Body>
-                You've been selected for a chance to get one year of subscription to
-                use Wikipedia for free!
-              </Modal.Body>
-            </Modal>
-          </div>
-        </div>
-
-        </div>
-
-        <div className="flex gap-x-4 py-4 items-end">
-          <div>
-            <Button color="error" className="normal-case" onClick={toggleVisible}>Запрос на смену пароля</Button>
-            <Modal open={visible} onClickBackdrop={toggleVisible}>
-              <Button
-                size="sm"
-                shape="circle"
-                className="absolute right-2 top-2"
-                onClick={toggleVisible}
-              >
-                ✕
-              </Button>
-              <Modal.Header className="font-bold">
-                Congratulations random Interner user!
-              </Modal.Header>
-
-              <Modal.Body>
-                You've been selected for a chance to get one year of subscription to
-                use Wikipedia for free!
-              </Modal.Body>
-            </Modal>
-          </div>
-        </div>
-
+        <ChangePassword/>
       </div>
     </>
   )
