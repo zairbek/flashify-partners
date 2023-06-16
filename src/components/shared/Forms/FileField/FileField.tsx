@@ -4,18 +4,17 @@ import React from 'react';
 import classNames from "classnames";
 import InputMask from "react-input-mask";
 import {InputProps} from "react-daisyui";
-import {Input} from "@/lib/daisyUi";
+import {Input, FileInput} from "@/lib/daisyUi";
 import {useField} from "formik";
 
-interface TextFieldProps extends InputProps {
+interface FileFieldProps extends InputProps {
   label?: string;
   error?: boolean;
   message?: string;
-  alt?: string;
   mask?: string;
 }
 
-const TextField: React.FC<TextFieldProps> = (props ) => {
+const FileField: React.FC<FileFieldProps> = (props ) => {
   const [field, meta, helpers] = useField(props);
 
   return (
@@ -26,21 +25,11 @@ const TextField: React.FC<TextFieldProps> = (props ) => {
           <span className="label-text">{props.label}
             {props.required && <span className="ml-1 text-red-500">*</span>}
           </span>
-          <span className="label-text-alt text-info-content/70">{props.alt}</span>
+          <span className="label-text-alt"/>
         </label>
       }
 
-      {!props.mask
-        ? <Input color={meta.touched && meta.error ? "error" : props.color} readOnly={props.readOnly} {...field}/>
-        : <InputMask
-          mask={props.mask}
-          placeholder={props.placeholder}
-          readOnly={props.readOnly}
-          {...field}
-        >
-          <Input color={meta.touched && meta.error ? "error" : props.color} type={props.type} readOnly={props.readOnly} {...field}/>
-        </InputMask>
-      }
+      <FileInput color={meta.touched && meta.error ? "error" : props.color} size={props.size} readOnly={props.readOnly} {...field}/>
 
       {!!(meta.touched && meta.error) &&
         <label className="label">
@@ -55,4 +44,4 @@ const TextField: React.FC<TextFieldProps> = (props ) => {
   )
 }
 
-export default TextField;
+export default FileField;
