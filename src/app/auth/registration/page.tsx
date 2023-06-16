@@ -19,7 +19,7 @@ export default function Registration() {
 
             <Steps className="mb-10">
               <Steps.Step color={step >= 1 && 'primary'}>Создание аккаунта</Steps.Step>
-              <Steps.Step color={step >= 2 && 'primary'}>Данные о{'\u00A0'}компании</Steps.Step>
+              <Steps.Step color={step >= 2 && 'primary'}>Информация о{'\u00A0'}магазине</Steps.Step>
               <Steps.Step color={step >= 3 && 'primary'}>Данные о{'\u00A0'}компании</Steps.Step>
               <Steps.Step color={step >= 4 && 'primary'}>Финиш</Steps.Step>
             </Steps>

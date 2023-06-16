@@ -47,7 +47,7 @@ const StepTwo: React.FC<StepTwoProps> = ({onNextStep}) => {
   return (
     <>
       <div className="mb-8 text-center">
-        <h1 className="my-3 text-4xl font-bold">Данные о компании</h1>
+        <h1 className="my-3 text-4xl font-bold">Информация о{'\u00A0'}магазине</h1>
         <p className="text-sm text-coolGray-400">Войдите в систему для доступа к своему аккаунту</p>
       </div>
 
@@ -58,12 +58,24 @@ const StepTwo: React.FC<StepTwoProps> = ({onNextStep}) => {
       >
         <Form action="">
           <div className="flex flex-col gap-y-3">
-            <SelectField color="primary" label="Тип оргонизации" required name="organizationType" />
-            <TextField color="primary" label="ИНН" required name="inn" />
-            <SelectField color="primary" label="Регион работы" required name="regionOfWork" />
-            <TextField color="primary" label="Юридическое название компании" required name="legalCompanyName" />
-            <SelectField color="primary" label="Категория товаров" required name="productCategory" />
+            <SelectField color="primary" label="Категория товаров" required name="productCategory">
+              <option value="" disabled>Выбрать</option>
+              <option value="avto">Авто</option>
+              <option value="moto">Moto</option>
+            </SelectField>
+            <SelectField color="primary" label="Регион работы" required name="regionOfWork">
+              <option value="" disabled>Выбрать</option>
+              <option value="bishkek">Бишкек</option>
+              <option value="osh">Ош</option>
+              <option value="talas">Талас</option>
+            </SelectField>
             <TextField color="primary" label="Названия, которое увидять покупатели" required name="companyName" />
+            <SelectField color="primary" label="Тип организации" required name="organizationType">
+              <option value="" disabled>Выбрать</option>
+              <option value="chp">ЧП</option>
+            </SelectField>
+            <TextField color="primary" label="Юридическое название компании" required name="legalCompanyName" />
+            <TextField color="primary" label="ИНН" required name="inn" />
             <Button color="primary" type="submit" fullWidth>Следующий шаг</Button>
           </div>
         </Form>

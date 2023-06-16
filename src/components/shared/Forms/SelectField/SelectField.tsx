@@ -25,14 +25,7 @@ const SelectField: React.FC<SelectFieldProps> = (props) => {
       }
 
       <Select color={meta.touched && meta.error ? "error" : props.color} {...field}>
-        <option value={'default'} disabled>
-          Pick one
-        </option>
-        <option value="Star Wars">Star Wars</option>
-        <option value="Harry Potter">Harry Potter</option>
-        <option value="Lord of the Rings">Lord of the Rings</option>
-        <option value="Planet of the Apes">Planet of the Apes</option>
-        <option value="Star Trek">Star Trek</option>
+        {props.children}
       </Select>
 
       {!!(meta.touched && meta.error) &&

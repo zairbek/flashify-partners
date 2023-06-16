@@ -22,8 +22,12 @@ export default function AuthLayout({
       url: '/dashboard/settings'
     },
     {
-      name: 'Информация о компании',
-      url: '/dashboard/settings/aboutCompany'
+      name: 'Информация о магазине',
+      url: '/dashboard/settings/storeInformation'
+    },
+    {
+      name: 'Данные компании',
+      url: '/dashboard/settings/companyData'
     },
     {
       name: 'Документы компании',
