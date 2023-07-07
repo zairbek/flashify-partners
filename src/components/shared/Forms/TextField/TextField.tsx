@@ -31,14 +31,15 @@ const TextField: React.FC<TextFieldProps> = (props ) => {
       }
 
       {!props.mask
-        ? <Input color={meta.touched && meta.error ? "error" : props.color} readOnly={props.readOnly} {...field}/>
+        ? <Input color={meta.touched && meta.error ? "error" : props.color} readOnly={props.readOnly} autoFocus={props.autoFocus} {...field}/>
         : <InputMask
           mask={props.mask}
           placeholder={props.placeholder}
           readOnly={props.readOnly}
+          autoFocus={props.autoFocus}
           {...field}
         >
-          <Input color={meta.touched && meta.error ? "error" : props.color} type={props.type} readOnly={props.readOnly} {...field}/>
+          <Input color={meta.touched && meta.error ? "error" : props.color} type={props.type} readOnly={props.readOnly} autoFocus={props.autoFocus} {...field}/>
         </InputMask>
       }
 

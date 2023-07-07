@@ -7,9 +7,10 @@ import AccountCard from "@/components/features/AccountCard/AccountCard";
 import {Divider} from "react-daisyui";
 import CircleAccountCard from "@/components/features/AccountCard/CircleAccountCard/CircleAccountCard";
 import DashboardRootMenu from "@/components/features/DashboardRootMenu/DashboardRootMenu";
+import {signIn, useSession} from "next-auth/react";
 
 const Header = () => {
-  const [authenticated, setAuthenticated] = useState(true);
+  const session = useSession();
   const [visible, setVisible] = useState(false)
 
   const toggleVisible = () => {
@@ -20,11 +21,11 @@ const Header = () => {
     <>
     <ul className="menu p-4 w-80 h-full bg-base-200 text-base-content">
       <li>
-        {authenticated
-          ? <AccountCard/>
+        {session.status === 'authenticated'
+          ? <AccountCard user={session.data.user}/>
           : (
             <div>
-              <NextLink className="btn btn-primary btn-sm normal-case" onClick={() => toggleVisible()} href="/auth">Войти</NextLink>
+              <Button size="sm" color="primary" className="normal-case" onClick={() => signIn()}>Войти</Button>
               <NextLink className="btn btn-primary btn-sm normal-case" onClick={() => toggleVisible()} href="/auth/registration">Зарегистрироваться</NextLink>
             </div>
           )
@@ -55,12 +56,12 @@ const Header = () => {
         <div className="flex-1"></div>
 
         <div className="flex-none gap-2">
-          {authenticated
-            ? (<CircleAccountCard/>)
+          {session.status === 'authenticated'
+            ? (<CircleAccountCard user={session.data.user}/>)
             : (
               <>
                 <div className="hidden md:flex gap-1">
-                  <NextLink className="btn btn-primary" href="/auth">Войти</NextLink>
+                  <Button color="primary" onClick={() => signIn()}>Войти</Button>
                   <NextLink className="btn btn-primary" href="/auth/registration">Зарегистрироваться</NextLink>
                 </div>
               </>
@@ -71,7 +72,7 @@ const Header = () => {
         </div>
       </Navbar>
 
-      {authenticated && (<DashboardRootMenu/>)}
+      {session.status === 'authenticated' && (<DashboardRootMenu/>)}
     </>
   );
 };

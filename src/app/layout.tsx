@@ -2,6 +2,8 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import cx from 'classnames'
 import Header from "@/components/features/Header/Header";
+import {Providers} from "@/providers/provider";
+import {useSession} from "next-auth/react";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -11,24 +13,26 @@ export const metadata = {
 }
 
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode
 }) {
   return (
     <html lang="ru" data-theme="">
       <body className={cx('bg-base-200 relative', inter.className)}>
-        <div className="container-fluid mx-3">
+        <Providers>
+          <div className="container-fluid mx-3">
 
-          <div className="pt-3"></div>
+            <div className="pt-3"></div>
 
-          <Header/>
+            <Header/>
 
-          <div className="flex flex-col">
-            {children}
+            <div className="flex flex-col">
+              {children}
+            </div>
+
           </div>
-
-        </div>
+        </Providers>
       </body>
     </html>
   )
