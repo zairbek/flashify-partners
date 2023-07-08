@@ -12,3 +12,8 @@ export const instance = axios.create({
   headers: headers
 })
 
+export const instanceAuth = axios.create({
+  baseURL: 'http://market.loc/api/partners/v1',
+  withCredentials: true,
+  headers: headers
+})

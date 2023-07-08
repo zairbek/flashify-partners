@@ -5,10 +5,10 @@ import {useRouter} from "next/navigation";
 import {Button, Link, Divider, Card} from '@/lib/daisyUi'
 import {Form, Formik, FormikErrors, FormikHelpers} from "formik";
 import * as Yup from 'yup';
-import {useState} from "react";
+import React, {useState} from "react";
 import {instance} from "@/lib/axios/Axios";
 import {clear} from "@/lib/formatters/Number";
-import {signIn} from "next-auth/react";
+import {signIn, useSession} from "next-auth/react";
 import {SignInPhoneValidation} from "@/types/auth/SignInPhone";
 import {AxiosError} from "axios";
 
@@ -16,10 +16,15 @@ interface RequestValues {
   phone: string;
 }
 
+interface RequestErrorValues {
+  phone?: string;
+}
+
 interface AuthValues {
   phone: string;
   code: string;
 }
+
 interface AuthErrorValues {
   phone?: string;
   code?: string;
@@ -29,6 +34,11 @@ export default function Auth() {
   const router = useRouter()
   const [confirmationForm, setConfirmationForm] = useState<boolean>(false)
   const [phone, setPhone] = useState<string>('')
+
+  const session = useSession();
+  if (session.status === 'authenticated') {
+    router.push('/dashboard')
+  }
 
   const requestForm: {
     initialValues: RequestValues,
@@ -54,13 +64,11 @@ export default function Auth() {
             if (err.response?.status === 422) {
               const error = err.response.data as SignInPhoneValidation
 
-              const formState: FormikErrors<AuthErrorValues> = {
-                phone: null,
-                code: null,
+              const formState: FormikErrors<RequestErrorValues> = {
+                phone: '',
               }
 
               if (error.errors.phone) formState.phone = error.errors.phone.join('. ')
-              if (error.errors.code) formState.code = error.errors.code.join('. ')
 
               action.setErrors(formState)
             }
@@ -92,16 +100,15 @@ export default function Auth() {
         if (error) {
           const message = JSON.parse(error) as { message: SignInPhoneValidation }
           const formState: FormikErrors<AuthErrorValues> = {
-            phone: null,
-            code: null,
+            phone: '',
+            code: '',
           }
 
           if (message.message.errors.phone) formState.phone = message.message.errors.phone.join('. ')
           if (message.message.errors.code) formState.code = message.message.errors.code.join('. ')
 
           action.setErrors(formState)
-        }
-        if (ok) {
+        } else if (ok) {
           const callbackUrl = (new URL(url)).searchParams.get('callbackUrl')
           if (callbackUrl) {
             router.push(callbackUrl)
@@ -154,9 +161,6 @@ export default function Auth() {
               </Formik>
               </div>
             }
-
-
-
 
             <Divider>или</Divider>
 

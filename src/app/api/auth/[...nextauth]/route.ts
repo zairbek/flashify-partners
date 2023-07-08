@@ -1,11 +1,11 @@
-import NextAuth from "next-auth";
+import NextAuth, {NextAuthOptions} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import {instance} from "@/lib/axios/Axios";
 import {AxiosError, AxiosResponse} from "axios";
 import {Token} from "@/types/auth/Token";
-import {Me} from "@/types/user/Me";
+import {User} from "@/types/user";
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
@@ -31,7 +31,7 @@ const handler = NextAuth({
           const token = await signInReq.data
 
           instance.defaults.headers.common['Authorization'] = 'Bearer ' + token.accessToken;
-          const meReq: AxiosResponse<Me> = await instance.get('me')
+          const meReq: AxiosResponse<User> = await instance.get('me')
           const user = await meReq.data
 
           console.log(user && token)
@@ -61,6 +61,8 @@ const handler = NextAuth({
     }
 
   }
-});
+}
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
