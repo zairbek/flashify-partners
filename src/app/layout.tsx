@@ -1,9 +1,10 @@
 import './globals.css'
+import 'react-toastify/dist/ReactToastify.css';
 import { Inter } from 'next/font/google'
 import cx from 'classnames'
 import Header from "@/components/features/Header/Header";
 import {Providers} from "@/providers/provider";
-import {useSession} from "next-auth/react";
+import {ToastContainer} from "react-toastify";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -32,6 +33,7 @@ export default function RootLayout({
             </div>
 
           </div>
+          <ToastContainer position="bottom-right"/>
         </Providers>
       </body>
     </html>

@@ -1,35 +1,11 @@
 'use client'
 
-import TextField from "@/components/shared/Forms/TextField/TextField";
 import {useRouter} from "next/navigation";
-import {Button, Link, Divider, Card} from '@/lib/daisyUi'
-import {Form, Formik, FormikErrors, FormikHelpers} from "formik";
-import * as Yup from 'yup';
+import {Link, Divider, Card} from '@/lib/daisyUi'
 import React, {useState} from "react";
-import {instance} from "@/lib/axios/Axios";
-import {clear} from "@/lib/formatters/Number";
-import {signIn, useSession} from "next-auth/react";
-import {SignInPhoneValidation} from "@/types/auth/SignInPhone";
-import {AxiosError} from "axios";
-import Toast, {AlertMessage} from "@/components/shared/Toasts/Toast/Toast";
-
-interface RequestValues {
-  phone: string;
-}
-
-interface RequestErrorValues {
-  phone?: string;
-}
-
-interface AuthValues {
-  phone: string;
-  code: string;
-}
-
-interface AuthErrorValues {
-  phone?: string;
-  code?: string;
-}
+import {useSession} from "next-auth/react";
+import RequestCode from "@/components/features/Auth/Phone/RequestCode";
+import SignIn from "@/components/features/Auth/Phone/SignIn";
 
 export default function Auth() {
   const router = useRouter()
@@ -41,95 +17,9 @@ export default function Auth() {
     router.push('/dashboard')
   }
 
-  const [messagesBag, setMessagesBag] = useState<AlertMessage[]>([])
-  const addMessage = (error: AlertMessage): void => {
-    setMessagesBag([...messagesBag, error]);
-  }
-
-  const handleRemoveToast = (index: number) => {
-    setMessagesBag((messagesBag) => messagesBag.filter((_, i) => i !== index))
-  }
-
-
-
-  const requestForm: {
-    initialValues: RequestValues,
-    validationSchema: Yup.ObjectSchema<RequestValues>
-    onSubmit(values: RequestValues, action: FormikHelpers<RequestValues>): void
-  } = {
-    initialValues: {
-      phone: '',
-    },
-    validationSchema: Yup.object().shape({
-      phone: Yup.string().required()
-    }),
-    onSubmit: (values, action) => {
-      const phone = clear(values.phone)
-
-      instance.post('auth/phone/request', {phone})
-        .then(res => {
-          setPhone(values.phone)
-          setConfirmationForm(true);
-        })
-        .catch(err => {
-          if (err instanceof AxiosError) {
-            if (err.response?.status === 422) {
-              const error = err.response.data as SignInPhoneValidation
-
-              const formState: FormikErrors<RequestErrorValues> = {
-                phone: '',
-              }
-
-              if (error.errors.phone) formState.phone = error.errors.phone.join('. ')
-
-              action.setErrors(formState)
-            }
-          }
-        })
-    }
-  }
-
-
-  const authForm: {
-    initialValues: AuthValues,
-    validationSchema: Yup.ObjectSchema<AuthValues>
-    onSubmit(values: AuthValues, action: FormikHelpers<AuthValues>): void
-  } = {
-    initialValues: {
-      phone,
-      code: ''
-    },
-    validationSchema: Yup.object().shape({
-      phone: Yup.string().required(),
-      code: Yup.string().required()
-    }),
-    onSubmit: (values, action) => {
-      const phone = clear(values.phone)
-      const code = clear(values.code)
-
-      signIn('phoneCredentials', {phone, code, redirect: false})
-        .then(({error, ok, status, url}) => {
-        if (error) {
-          const message = JSON.parse(error) as { message: SignInPhoneValidation }
-          const formState: FormikErrors<AuthErrorValues> = {
-            phone: '',
-            code: '',
-          }
-
-          if (message.message.errors.phone) formState.phone = message.message.errors.phone.join('. ')
-          if (message.message.errors.code) formState.code = message.message.errors.code.join('. ')
-
-          action.setErrors(formState)
-        } else if (ok) {
-          const callbackUrl = (new URL(url)).searchParams.get('callbackUrl')
-          if (callbackUrl) {
-            router.push(callbackUrl)
-          }
-        } else {
-          // todo: всплывашка
-        }
-      })
-    }
+  const toNextStep = (phone: string) => {
+    setPhone(phone)
+    setConfirmationForm(true);
   }
 
   return (
@@ -144,34 +34,8 @@ export default function Auth() {
           <div className="flex flex-col w-full border-opacity-50">
 
             {!confirmationForm
-            ? <Formik
-                initialValues={requestForm.initialValues}
-                validationSchema={requestForm.validationSchema}
-                onSubmit={(values, action) => requestForm.onSubmit(values, action)}
-              >
-                <Form>
-                  <div className="flex flex-col gap-y-6">
-                    <TextField label="Телефон" type="tel" name="phone" mask="+\9\96 (999) 99-99-99" placeholder="+996 (___) __-__-__"/>
-                    <Button color="primary" type="submit" fullWidth>Войти</Button>
-                  </div>
-                </Form>
-              </Formik>
-            :
-              <div>
-              <Formik
-                initialValues={authForm.initialValues}
-                validationSchema={authForm.validationSchema}
-                onSubmit={(values, action) => authForm.onSubmit(values, action)}
-              >
-                <Form>
-                  <div className="flex flex-col gap-y-6">
-                    <TextField label="Телефон" type="tel" name="phone" mask="+\9\96 (999) 99-99-99" placeholder="+996 (___) __-__-__" readOnly/>
-                    <TextField label="Код из смс" type="tel" name="code" mask="999-999" placeholder="___-___" autoFocus/>
-                    <Button color="primary" type="submit" fullWidth>Войти</Button>
-                  </div>
-                </Form>
-              </Formik>
-              </div>
+              ? <RequestCode toNextStep={toNextStep}/>
+              : <SignIn phone={phone}/>
             }
 
             <Divider>или</Divider>
@@ -183,9 +47,6 @@ export default function Auth() {
           </div>
         </Card.Body>
       </Card>
-
-
-      <Toast alerts={messagesBag} handleRemove={handleRemoveToast}/>
     </>
   )
 };
