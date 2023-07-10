@@ -11,6 +11,7 @@ import {clear} from "@/lib/formatters/Number";
 import {signIn, useSession} from "next-auth/react";
 import {SignInPhoneValidation} from "@/types/auth/SignInPhone";
 import {AxiosError} from "axios";
+import Toast, {AlertMessage} from "@/components/shared/Toasts/Toast/Toast";
 
 interface RequestValues {
   phone: string;
@@ -39,6 +40,17 @@ export default function Auth() {
   if (session.status === 'authenticated') {
     router.push('/dashboard')
   }
+
+  const [messagesBag, setMessagesBag] = useState<AlertMessage[]>([])
+  const addMessage = (error: AlertMessage): void => {
+    setMessagesBag([...messagesBag, error]);
+  }
+
+  const handleRemoveToast = (index: number) => {
+    setMessagesBag((messagesBag) => messagesBag.filter((_, i) => i !== index))
+  }
+
+
 
   const requestForm: {
     initialValues: RequestValues,
@@ -171,6 +183,9 @@ export default function Auth() {
           </div>
         </Card.Body>
       </Card>
+
+
+      <Toast alerts={messagesBag} handleRemove={handleRemoveToast}/>
     </>
   )
 };
