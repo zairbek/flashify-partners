@@ -65,7 +65,7 @@ const RequestCode: React.FC<Props> = ({toNextStep}) => {
     >
       <Form>
         <div className="flex flex-col gap-y-6">
-          <TextField label="Телефон" type="tel" name="phone" mask="+\9\96 (999) 99-99-99" placeholder="+996 (___) __-__-__"/>
+          <TextField label="Телефон" type="tel" name="phone" mask="+\9\96 (999) 99-99-99" placeholder="+996 (___) __-__-__" autoFocus/>
           <Button color="primary" type="submit" fullWidth>Войти</Button>
         </div>
       </Form>
