@@ -3,41 +3,81 @@
 import React, {useState} from "react";
 import {Divider, Button, Modal} from "@/lib/daisyUi";
 import TextField from "@/components/shared/Forms/TextField/TextField";
-import {Form, Formik, FormikHelpers} from "formik";
+import {Form, Formik, FormikErrors, FormikHelpers} from "formik";
 import * as Yup from 'yup';
-import {Input} from "react-daisyui";
 import {ObjectSchema} from "yup";
 import ChangeEmail from "@/components/features/Settings/Account/ChangeEmail";
 import ChangePhone from "@/components/features/Settings/Account/ChangePhone";
 import ChangePassword from "@/components/features/Settings/Account/ChangePassword";
+import {useSession} from "next-auth/react";
+import {instanceAuth} from "@/lib/axios/Axios";
+import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
+import ContentLoader from "react-content-loader";
+import ThreeDotsSkeleton from "@/components/features/Loaders/ThreeDotsSkeleton/ThreeDotsSkeleton";
+import {AxiosError} from "axios";
+import {SignInPhoneValidation} from "@/types/auth/SignInPhone";
+import {UpdateMeValidation} from "@/types/user/Me";
+import {toast} from "react-toastify";
 
 interface Values {
+  firstName?: string;
+  lastName?: string;
+}
+
+interface FormStateValues {
   firstName: string;
   lastName: string;
 }
 
-
 export default function Settings() {
+  const {data: session, update, status} = useSession()
+  const axiosAuth = useAxiosAuth();
+
+  if (status === 'loading') {
+    return (<ThreeDotsSkeleton/>);
+  }
+
   const formNames: {
     initialValues: Values,
     validationSchema: ObjectSchema<Values>,
     onSubmit(values: Values, action: FormikHelpers<Values>): any
   } = {
     initialValues: {
-      firstName: '',
-      lastName: '',
+      firstName: session?.user?.name.firstName,
+      lastName: session?.user?.name.lastName,
     },
     validationSchema: Yup.object().shape({
       firstName: Yup.string().required(),
       lastName: Yup.string().required(),
     }),
     onSubmit: (values: Values, action: FormikHelpers<Values>) => {
-
+      axiosAuth.post('me', {
+        firstName: values.firstName,
+        lastName: values.lastName,
+      }).then(res => {
+        axiosAuth.get('me').then(res => {
+          const token = session?.user.token;
+          update({
+            ...session,
+            user: {
+              ...res.data,
+              token: token
+            }
+          }).then(r => {})
+        })
+      }).catch(err => {
+        if (err instanceof AxiosError && err.response?.status === 422) {
+          const error = err.response.data as UpdateMeValidation
+          const formState: FormikErrors<FormStateValues> = {firstName: '', lastName: '',}
+          if (error.errors.firstName) formState.firstName = error.errors.firstName.join('. ')
+          if (error.errors.lastName) formState.lastName = error.errors.lastName.join('. ')
+          action.setErrors(formState)
+        } else {
+          toast('что то пошло не так', {type: 'error'})
+        }
+      })
     }
   }
-
-    const [phoneVisible, setPhoneVisible] = useState<boolean>(false)
-    const [passwordVisible, setPasswordVisible] = useState<boolean>(false)
 
   return (
     <>
