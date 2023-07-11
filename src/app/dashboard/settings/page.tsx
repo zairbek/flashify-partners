@@ -1,7 +1,7 @@
 'use client'
 
-import React, {useState} from "react";
-import {Divider, Button, Modal} from "@/lib/daisyUi";
+import React from "react";
+import {Divider, Button} from "@/lib/daisyUi";
 import TextField from "@/components/shared/Forms/TextField/TextField";
 import {Form, Formik, FormikErrors, FormikHelpers} from "formik";
 import * as Yup from 'yup';
@@ -10,12 +10,9 @@ import ChangeEmail from "@/components/features/Settings/Account/ChangeEmail";
 import ChangePhone from "@/components/features/Settings/Account/ChangePhone";
 import ChangePassword from "@/components/features/Settings/Account/ChangePassword";
 import {useSession} from "next-auth/react";
-import {instanceAuth} from "@/lib/axios/Axios";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
-import ContentLoader from "react-content-loader";
 import ThreeDotsSkeleton from "@/components/features/Loaders/ThreeDotsSkeleton/ThreeDotsSkeleton";
 import {AxiosError} from "axios";
-import {SignInPhoneValidation} from "@/types/auth/SignInPhone";
 import {UpdateMeValidation} from "@/types/user/Me";
 import {toast} from "react-toastify";
 
