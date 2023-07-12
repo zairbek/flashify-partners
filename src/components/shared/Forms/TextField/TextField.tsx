@@ -5,7 +5,7 @@ import classNames from "classnames";
 import InputMask from "react-input-mask";
 import {InputProps} from "react-daisyui";
 import {Input} from "@/lib/daisyUi";
-import {useField} from "formik";
+import {FieldInputProps, useField} from "formik";
 
 interface TextFieldProps extends InputProps {
   label?: string;
@@ -16,7 +16,7 @@ interface TextFieldProps extends InputProps {
 }
 
 const TextField: React.FC<TextFieldProps> = (props ) => {
-  const [field, meta, helpers] = useField(props);
+  const [field, meta, helpers] = useField(props as FieldInputProps<any>);
 
   return (
     <div className="form-control w-full">
