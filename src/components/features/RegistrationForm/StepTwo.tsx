@@ -11,30 +11,30 @@ interface StepTwoProps {
 }
 
 interface Values {
-  organizationType: string;
-  inn: string;
+  // organizationType: string;
+  // inn: string;
   regionOfWork: string;
-  legalCompanyName: string;
-  productCategory: string;
+  // legalCompanyName: string;
+  // productCategory: string;
   companyName: string;
 }
 
 const StepTwo: React.FC<StepTwoProps> = ({onNextStep}) => {
   const initialValues: Values = {
-    organizationType: '',
-    inn: '',
+    // organizationType: '',
+    // inn: '',
     regionOfWork: '',
-    legalCompanyName: '',
-    productCategory: '',
+    // legalCompanyName: '',
+    // productCategory: '',
     companyName: '',
   }
 
   const registrationSchema: ObjectSchema<Values> = Yup.object().shape({
-    organizationType: Yup.string().required(),
-    inn: Yup.string().required(),
+    // organizationType: Yup.string().required(),
+    // inn: Yup.string().required(),
     regionOfWork: Yup.string().required(),
-    legalCompanyName: Yup.string().required(),
-    productCategory: Yup.string().required(),
+    // legalCompanyName: Yup.string().required(),
+    // productCategory: Yup.string().required(),
     companyName: Yup.string().required(),
   })
 
@@ -58,11 +58,11 @@ const StepTwo: React.FC<StepTwoProps> = ({onNextStep}) => {
       >
         <Form action="">
           <div className="flex flex-col gap-y-3">
-            <SelectField color="primary" label="Категория товаров" required name="productCategory">
-              <option value="" disabled>Выбрать</option>
-              <option value="avto">Авто</option>
-              <option value="moto">Moto</option>
-            </SelectField>
+            {/*<SelectField color="primary" label="Категория товаров" required name="productCategory">*/}
+            {/*  <option value="" disabled>Выбрать</option>*/}
+            {/*  <option value="avto">Авто</option>*/}
+            {/*  <option value="moto">Moto</option>*/}
+            {/*</SelectField>*/}
             <SelectField color="primary" label="Регион работы" required name="regionOfWork">
               <option value="" disabled>Выбрать</option>
               <option value="bishkek">Бишкек</option>
@@ -70,12 +70,12 @@ const StepTwo: React.FC<StepTwoProps> = ({onNextStep}) => {
               <option value="talas">Талас</option>
             </SelectField>
             <TextField color="primary" label="Названия, которое увидять покупатели" required name="companyName" />
-            <SelectField color="primary" label="Тип организации" required name="organizationType">
-              <option value="" disabled>Выбрать</option>
-              <option value="chp">ЧП</option>
-            </SelectField>
-            <TextField color="primary" label="Юридическое название компании" required name="legalCompanyName" />
-            <TextField color="primary" label="ИНН" required name="inn" />
+            {/*<SelectField color="primary" label="Тип организации" required name="organizationType">*/}
+            {/*  <option value="" disabled>Выбрать</option>*/}
+            {/*  <option value="chp">ЧП</option>*/}
+            {/*</SelectField>*/}
+            {/*<TextField color="primary" label="Юридическое название компании" required name="legalCompanyName" />*/}
+            {/*<TextField color="primary" label="ИНН" required name="inn" />*/}
             <Button color="primary" type="submit" fullWidth>Следующий шаг</Button>
           </div>
         </Form>
