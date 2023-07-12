@@ -104,7 +104,7 @@ export default function Settings() {
 
         <div className="flex gap-x-4">
           <ChangeEmail user={session?.user as MeToken}/>
-          <ChangePhone/>
+          <ChangePhone user={session?.user as MeToken}/>
         </div>
 
         <ChangePassword/>
