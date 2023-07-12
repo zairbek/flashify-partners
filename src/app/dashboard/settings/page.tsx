@@ -15,6 +15,7 @@ import ThreeDotsSkeleton from "@/components/features/Loaders/ThreeDotsSkeleton/T
 import {AxiosError} from "axios";
 import {UpdateMeValidation} from "@/types/user/Me";
 import {toast} from "react-toastify";
+import {MeToken} from "@/types/next-auth";
 
 interface Values {
   firstName?: string;
@@ -102,7 +103,7 @@ export default function Settings() {
         <Divider className="my-0"/>
 
         <div className="flex gap-x-4">
-          <ChangeEmail/>
+          <ChangeEmail user={session?.user as MeToken}/>
           <ChangePhone/>
         </div>
 

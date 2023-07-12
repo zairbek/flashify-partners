@@ -1,25 +1,38 @@
 import React, {useState} from 'react';
 import {Input} from "react-daisyui";
 import {Button, Modal} from "@/lib/daisyUi";
-import {Form, Formik, FormikHelpers} from "formik";
+import {Form, Formik, FormikErrors, FormikHelpers} from "formik";
 import TextField from "@/components/shared/Forms/TextField/TextField";
 import * as Yup from "yup";
+import {User} from "@/types/user";
+import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
+import {toast} from "react-toastify";
+import {AxiosError} from "axios";
+import {useSession} from "next-auth/react";
+import {clear} from "@/lib/formatters/Number";
 
 interface EmailValues {
-  email: string;
+  email: string|null;
 }
 
 interface EmailConfirmValues {
-  email: string;
+  email: string|null;
   code: string;
 }
 
-const ChangeEmail = () => {
+interface Props {
+  user: User
+}
+
+const ChangeEmail: React.FC<Props> = ({user}) => {
   const [emailVisible, setEmailVisible] = useState<boolean>(false)
   const [confirmForm, setConfirmForm] = useState<boolean>(true)
-  const [email, setEmail] = useState<string>('')
+  const [email, setEmail] = useState<string|null>(user.email)
+  const axiosAuth = useAxiosAuth()
+  const {data: session, update} = useSession();
 
   const toggle = () => {
+    setEmail(user.email);
     setEmailVisible(!emailVisible)
     !emailVisible && setConfirmForm(true)
   }
@@ -30,15 +43,30 @@ const ChangeEmail = () => {
     onSubmit(values: EmailValues, action: FormikHelpers<EmailValues>): void
   } = {
     initialValues: {
-      email: 'xaiker007@gmail.com'
+      email: email
     },
     validationSchema: Yup.object().shape({
       email: Yup.string().email().required()
     }),
     onSubmit: (values: EmailValues, action: FormikHelpers<EmailValues>) => {
-      console.log(values)
-      setConfirmForm(false)
-      setEmail(values.email)
+      axiosAuth.post('/me/email/request', {email: values.email})
+        .then(res => {
+          setConfirmForm(false)
+          setEmail(values.email)
+        }).catch(err => {
+          if (err instanceof AxiosError) {
+            if (err.response?.status === 422) {
+              const error = err.response.data
+              const formState: FormikErrors<any> = {
+                email: '',
+              }
+              if (error.errors.email) formState.email = error.errors.email.join('. ')
+              action.setErrors(formState)
+            }
+          } else {
+            toast('Что то пошло не так!', {type: 'error'})
+          }
+      })
     }
   }
 
@@ -55,7 +83,38 @@ const ChangeEmail = () => {
       email: Yup.string().email().required()
     }),
     onSubmit: (values: EmailConfirmValues, action: FormikHelpers<EmailConfirmValues>) => {
-      console.log(values)
+      const code = clear(values.code)
+      axiosAuth.post('/me/email/change', {
+        email: values.email,
+        code: code
+      })
+        .then(res => {
+          axiosAuth.get('me').then(res => {
+            const token = session?.user.token;
+            update({
+              ...session,
+              user: {
+                ...res.data,
+                token: token
+              }
+            }).then(r => {})
+          })
+        }).catch(err => {
+        if (err instanceof AxiosError) {
+          if (err.response?.status === 422) {
+            const error = err.response.data
+            const formState: FormikErrors<any> = {
+              email: '',
+              code: '',
+            }
+            if (error.errors.email) formState.email = error.errors.email.join('. ')
+            if (error.errors.code) formState.code = error.errors.code.join('. ')
+            action.setErrors(formState)
+          }
+        } else {
+          toast('Что то пошло не так!', {type: 'error'})
+        }
+      })
     }
   }
 
@@ -66,7 +125,7 @@ const ChangeEmail = () => {
           <span className="label-text">Email</span>
           <span className="label-text-alt"/>
         </label>
-        <Input value="xaiker007@gmail.com" className="w-full" readOnly/>
+        <Input defaultValue={user.email ?? ''} className="w-full" readOnly/>
       </div>
 
       <div>
@@ -88,7 +147,7 @@ const ChangeEmail = () => {
                   onSubmit={emailForm.onSubmit}
                 >
                   <Form>
-                    <TextField label="Email" name="email" type="email" required/>
+                    <TextField label="Email" name="email" type="email" required autoFocus/>
                     <Button type="submit" color="primary" className="normal-case mt-4">Отправить</Button>
                   </Form>
                 </Formik>
@@ -100,7 +159,7 @@ const ChangeEmail = () => {
                 >
                   <Form className="flex flex-col gap-y-4">
                     <TextField label="Email" name="email" type="email" readOnly required/>
-                    <TextField label="Код из письма" name="code" type="tel" mask="999-999" placeholder="___-___" required/>
+                    <TextField label="Код из письма" name="code" type="tel" mask="999-999" placeholder="___-___" required autoFocus/>
                     <Button type="submit" color="primary" className="normal-case">Отправить</Button>
                   </Form>
                 </Formik>
