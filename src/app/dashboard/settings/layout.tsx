@@ -29,14 +29,6 @@ export default function AuthLayout({
       name: 'Данные компании',
       url: '/dashboard/settings/companyData'
     },
-    {
-      name: 'Документы компании',
-      url: '/dashboard/settings/companyDocuments'
-    },
-    {
-      name: 'Платежные реквизиты',
-      url: '/dashboard/settings/paymentDetails'
-    },
   ]
 
   return (
